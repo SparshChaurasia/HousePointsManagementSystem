@@ -1,122 +1,89 @@
-import mysql.connector
-from mysql.connector import errorcode
-from prettytable import from_db_cursor
+import sys
+from core.login import validate_user
+from core.utils import clear_screen
 
+print("LOGIN")
+print("-----")
+username = input("Username: ")
+password = input("Password: ")
 
-def connect_to_database():
-    try:
-        cnx = mysql.connector.connect(
-            user="root",
-            password="tiger",
-            host="127.0.0.1",
-            database="HousePointsManagementSystem",
-        )
+user = validate_user(username, password)
+if user == -1:
+    print("Invalid user credentials")
+    sys.exit(0)
+clear_screen()
 
-        return cnx
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Incorrect user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
+print("================ HOUSE POINTS MANAGEMENT SYSTEM ================")
+print(f"USER | {user[0]}")
+print("--------------")
+print(f"ROLE | {user[1]}\n")
 
+print(
+    "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants"
+)
+print(
+    "5. Add Student\n6. Add Event\n7. Add Event Participants\n8. Add Event Results\n9. Activity Report\n10. Show Menu\n"
+)
 
-def create_database_cursor(cnx):
-    try:
-        cur = cnx.cursor()
+cnx = connect_to_database()
 
-        return cur
-    except mysql.connector.Error as err:
-        print("Error in creating cursor")
-        print(err)
+while True:
+    ch = input_choice("Enter 8 to show menu")
 
+    if ch == -1:
+        continue
 
-def print_queryset(cur):
-    table = from_db_cursor(cur)
-    print(table)
+    elif ch == 0:
+        break
 
+    elif ch == 1:
+        cur = create_database_cursor(cnx)
+        cur.execute("SELECT Name, Points FROM Houses;")
+        print_queryset(cur)
 
-def input_choice(msg):
-    try:
-        print(msg)
-        ch = int(input(">>> "))
-        return ch
-    except:
-        print("Please enter a valid choice / number")
-        return -1
-
-
-if __name__ == "__main__":
-    print("-------------- HOUSE POINTS MANAGEMENT SYSTEM --------------")
-    print(
-        "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants"
-    )
-    print(
-        "5. Add Student\n6. Add Event\n7. Add Event Participants\n8. Add Event Results\n9. Activity Report\n10. Show Menu\n"
-    )
-
-    cnx = connect_to_database()
-
-    while True:
-        ch = input_choice("Enter 8 to show menu")
+    elif ch == 2:
+        ch = input_choice("\n0. Exit\n1. Search by ID\n2. Show all")
 
         if ch == -1:
             continue
-
         elif ch == 0:
             break
-
         elif ch == 1:
+            stud_id = int(input("Enter Student ID >> "))
             cur = create_database_cursor(cnx)
-            cur.execute("SELECT Name, Points FROM Houses;")
+            cur.execute(f"SELECT Name, Points FROM Students WHERE Id={stud_id};")
             print_queryset(cur)
-
         elif ch == 2:
-            ch = input_choice("\n0. Exit\n1. Search by ID\n2. Show all")
-
-            if ch == -1:
-                continue
-            elif ch == 0:
-                break
-            elif ch == 1:
-                stud_id = int(input("Enter Student ID >> "))
-                cur = create_database_cursor(cnx)
-                cur.execute(f"SELECT Name, Points FROM Students WHERE Id={stud_id};")
-                print_queryset(cur)
-            elif ch == 2:
-                cur = create_database_cursor(cnx)
-                cur.execute(f"SELECT Id, Name, House, Points FROM Students;")
-                print_queryset(cur)
-
-        elif ch == 3:
             cur = create_database_cursor(cnx)
-            cur.execute("SELECT * FROM Events;")
+            cur.execute(f"SELECT Id, Name, House, Points FROM Students;")
             print_queryset(cur)
 
-        elif ch == 4:
-            ch = input_choice("\n0. Exit\n1. Search by Event\n2. Show all")
+    elif ch == 3:
+        cur = create_database_cursor(cnx)
+        cur.execute("SELECT * FROM Events;")
+        print_queryset(cur)
 
-            if ch == -1:
-                continue
-            elif ch == 0:
-                break
-            elif ch == 1:
-                event_id = int(input("Enter Event ID >> "))
-                cur = create_database_cursor(cnx)
-                cur.execute(f"SELECT * FROM Participations WHERE EventId={event_id};")
-                print_queryset(cur)
-            elif ch == 2:
-                cur = create_database_cursor(cnx)
-                cur.execute(f"SELECT * FROM Participations;")
-                print_queryset(cur)
+    elif ch == 4:
+        ch = input_choice("\n0. Exit\n1. Search by Event\n2. Show all")
 
-        elif ch == 8:
-            print(
-                "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants"
-            )
-            print(
-                "5. Add Student\n6. Add Event\n7. Add Event Participants\n8. Show Menu\n"
-            )
+        if ch == -1:
+            continue
+        elif ch == 0:
+            break
+        elif ch == 1:
+            event_id = int(input("Enter Event ID >> "))
+            cur = create_database_cursor(cnx)
+            cur.execute(f"SELECT * FROM Participations WHERE EventId={event_id};")
+            print_queryset(cur)
+        elif ch == 2:
+            cur = create_database_cursor(cnx)
+            cur.execute(f"SELECT * FROM Participations;")
+            print_queryset(cur)
 
-    cnx.close()
+    elif ch == 8:
+        print(
+            "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants"
+        )
+        print("5. Add Student\n6. Add Event\n7. Add Event Participants\n8. Show Menu\n")
+
+cnx.close()

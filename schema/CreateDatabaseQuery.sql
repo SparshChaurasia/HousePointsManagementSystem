@@ -1,3 +1,10 @@
+CREATE TABLE `Users` (
+  `Id` int PRIMARY KEY,
+  `Username` char(15),
+  `Password` char(15),
+  `Role` varchar(10)
+);
+
 CREATE TABLE `Houses` (
   `Id` int PRIMARY KEY,
   `Name` varchar(20),
