@@ -3,10 +3,20 @@ import os
 import mysql.connector
 from mysql.connector import errorcode
 from prettytable import from_db_cursor
+from prettytable import TableStyle
 
 
 def clear_screen():
-    """Clears the terminal screen."""
+    """
+    Clears the terminal screen
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     # For Windows
     if os.name == "nt":
         os.system("cls")
@@ -17,6 +27,8 @@ def clear_screen():
 
 def print_queryset(cur):
     table = from_db_cursor(cur)
+    table.align = "l"
+    table.set_style(TableStyle.SINGLE_BORDER)
     print(table)
 
 

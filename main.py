@@ -5,7 +5,6 @@ import user_interface
 from core.login import validate_user
 from core.utils import clear_screen
 
-
 clear_screen()
 print("LOGIN")
 print("---------------")
@@ -19,9 +18,9 @@ if user == -1:
 clear_screen()
 
 print("================ HOUSE POINTS MANAGEMENT SYSTEM ================")
-print(f"USER | {user[0]}")
-print("--------------")
-print(f"ROLE | {user[1]}\n")
+print("USER: ", user[0])
+print("ROLE: ", user[1])
+
 
 if user[1].lower() == "admin":
     admin_interface.main()
