@@ -8,12 +8,12 @@ def view_house_points(cnx):
 
 
 def view_student_points(cnx):
-    ch = input_choice("\n0. Exit\n1. Search by ID\n2. Show all")
+    ch = int_input("\n0. Exit\n1. Search by ID\n2. Show all")
 
     if ch == -1:
-        print("Error")
+        return
     elif ch == 0:
-        print("Error")
+        return
     elif ch == 1:
         stud_id = int(input("Enter Student ID >> "))
         cur = create_database_cursor(cnx)
@@ -32,12 +32,12 @@ def view_events(cnx):
 
 
 def view_event_participants(cnx):
-    ch = input_choice("\n0. Exit\n1. Search by Event\n2. Show all")
+    ch = int_input("\n0. Exit\n1. Search by Event\n2. Show all")
 
     if ch == -1:
-        print("Error")
+        return
     elif ch == 0:
-        print("Error")
+        return
     elif ch == 1:
         event_id = int(input("Enter Event ID >> "))
         cur = create_database_cursor(cnx)
@@ -51,13 +51,13 @@ def view_event_participants(cnx):
 
 def main():
     print(
-        "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants"
+        "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants\n5. Show Menu"
     )
 
     cnx = connect_to_database()
 
     while True:
-        ch = input_choice("Enter 8 to show menu")
+        ch = int_input("Enter 5 to show menu", (0, 5))
 
         if ch == -1:
             continue
@@ -71,9 +71,12 @@ def main():
             view_events(cnx)
         elif ch == 4:
             view_event_participants(cnx)
-        elif ch == 8:
+        elif ch == 5:
             print(
-                "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants"
+                "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants\n5. Show Menu"
             )
+        else:
+            print("Something went wrong!")
 
     cnx.close()
+    return

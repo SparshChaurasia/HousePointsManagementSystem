@@ -20,11 +20,19 @@ def print_queryset(cur):
     print(table)
 
 
-def input_choice(msg):
+def int_input(message, rng=None):
     try:
-        print(msg)
+        print(message)
         ch = int(input(">>> "))
-        return ch
+
+        if not rng:
+            return ch
+
+        if ch >= rng[0] and ch <= rng[1]:
+            return ch
+        else:
+            print("Please enter a valid choice / number")
+            return -1
     except:
         print("Please enter a valid choice / number")
         return -1
