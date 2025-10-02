@@ -27,7 +27,11 @@ def main():
     cnx = connect_to_database()
 
     while True:
-        ch = int_input("Enter 10 to show menu", (0, 10))
+        print("----------------------------------------------------------------")
+        ch = int_input(
+            "Enter 10 to show menu",
+            (0, 10),
+        )
 
         if ch == -1:
             continue

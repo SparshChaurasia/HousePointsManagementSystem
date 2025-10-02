@@ -1,4 +1,5 @@
 from core.utils import *
+from prettytable import PrettyTable, TableStyle
 
 
 def view_house_points(cnx):
@@ -50,14 +51,29 @@ def view_event_participants(cnx):
 
 
 def main():
-    print(
-        "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants\n5. Show Menu"
+    table = PrettyTable()
+    table.add_rows(
+        [
+            ["0", "Exit"],
+            ["1", "View House Points"],
+            ["2", "View Student Points"],
+            ["3", "View Events"],
+            ["4", "View Event Participants"],
+            ["5", "Show Menu"],
+        ]
     )
+    table.align = "l"
+    table.set_style(TableStyle.SINGLE_BORDER)
+    print(table.get_string(header=False))
 
     cnx = connect_to_database()
 
     while True:
-        ch = int_input("Enter 5 to show menu", (0, 5))
+        print("----------------------------------------------------------------")
+        ch = int_input(
+            "Enter 5 to show menu",
+            (0, 5),
+        )
 
         if ch == -1:
             continue
@@ -72,9 +88,20 @@ def main():
         elif ch == 4:
             view_event_participants(cnx)
         elif ch == 5:
-            print(
-                "0. Exit\n1. View House Points\n2. View Student Points\n3. View Events\n4. View Event Participants\n5. Show Menu"
+            table = PrettyTable()
+            table.add_rows(
+                [
+                    ["0", "Exit"],
+                    ["1", "View House Points"],
+                    ["2", "View Student Points"],
+                    ["3", "View Events"],
+                    ["4", "View Event Participants"],
+                    ["5", "Show Menu"],
+                ]
             )
+            table.align = "l"
+            table.set_style(TableStyle.SINGLE_BORDER)
+            print(table.get_string(header=False))
         else:
             print("Something went wrong!")
 

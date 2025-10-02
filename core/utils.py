@@ -2,8 +2,7 @@ import os
 
 import mysql.connector
 from mysql.connector import errorcode
-from prettytable import from_db_cursor
-from prettytable import TableStyle
+from prettytable import TableStyle, from_db_cursor
 
 
 def clear_screen():

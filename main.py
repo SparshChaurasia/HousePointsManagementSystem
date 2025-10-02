@@ -7,7 +7,7 @@ from core.utils import clear_screen
 
 clear_screen()
 print("LOGIN")
-print("---------------")
+print("----------------------------------------------------------------")
 username = input("Username: ")
 password = input("Password: ")
 
@@ -17,7 +17,7 @@ if user == -1:
     sys.exit(0)
 clear_screen()
 
-print("================ HOUSE POINTS MANAGEMENT SYSTEM ================")
+print("---------------- HOUSE POINTS MANAGEMENT SYSTEM ----------------")
 print("USER: ", user[0])
 print("ROLE: ", user[1])
 
@@ -27,3 +27,5 @@ if user[1].lower() == "admin":
 
 elif user[1].lower() == "user":
     user_interface.main()
+
+print("------------------------- PROGRAM EXIT -------------------------")
