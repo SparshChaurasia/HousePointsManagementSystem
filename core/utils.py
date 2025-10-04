@@ -49,6 +49,35 @@ def int_input(message, rng=None):
         return -1
 
 
+def char_input(message, length=-1, max_length=-1):
+    try:
+        text = input(message)
+    except Exception:
+        print("Please enter a valid string!")
+        return -1
+    if length > 0:
+        if len(text) == length:
+            return text
+        else:
+            print(f"Please enter a string of length {length} characters!")
+            return -1
+    elif max_length > 0:
+        if len(text) <= max_length:
+            return text
+        else:
+            print(f"Please enter a string of maximum length of {length} characters!")
+            return -1
+
+
+def input_from_choice(choices):
+    i = 1
+    for choice in choices:
+        print(f"{i}. {choice}")
+    ch = int_input(">>> ", (1, len(choices)))
+
+    return choices[ch]
+
+
 def connect_to_database():
     """
     Creates a connection to database and returns the database connection object

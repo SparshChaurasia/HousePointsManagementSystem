@@ -2,35 +2,35 @@ CREATE DATABASE HousePointsManagementSystem;
 
 CREATE TABLE `Users` (
   `Id` int PRIMARY KEY,
-  `Username` char(15),
-  `Password` char(15),
-  `Role` varchar(10)
+  `Username` char(15) NOT NULL,
+  `Password` char(15) NOT NULL,
+  `Role` varchar(10) DEFAULT "User"
 );
 
 CREATE TABLE `Houses` (
   `Id` int PRIMARY KEY,
-  `Name` varchar(20),
-  `Points` int
+  `Name` varchar(20) NOT NULL,
+  `Points` int DEFAULT 0
 );
 
 CREATE TABLE `StudentGroup` (
   `Id` int PRIMARY KEY,
-  `Name` varchar(20)
+  `Name` varchar(20) NOT NULL
 );
 
 CREATE TABLE `Students` (
   `Id` char(7) PRIMARY KEY,
   `AdmissionNo` char(12),
-  `Name` varchar(50),
-  `House` varchar(20),
-  `Points` int
+  `Name` varchar(50) NOT NULL,
+  `House` varchar(20) NOT NULL,
+  `Points` int DEFAULT 0
 );
 
 CREATE TABLE `Events` (
   `Id` int PRIMARY KEY,
-  `Name` varchar(50),
-  `HeldOn` date,
-  `StudentGroup` varchar(20),
+  `Name` varchar(50) NOT NULL,
+  `HeldOn` date NOT NULL,
+  `StudentGroup` varchar(20) NOT NULL,
   `Type` varchar(20),
   `Organiser` varchar(50),
   `FirstPositionHouse` varchar(20),
@@ -41,9 +41,9 @@ CREATE TABLE `Events` (
 
 CREATE TABLE `Participations` (
   `Id` int PRIMARY KEY,
-  `EventId` int,
-  `StudentId` int,
-  `PointsAwarded` int
+  `EventId` int NOT NULL,
+  `StudentId` CHAR(7) NOT NULL,
+  `PointsAwarded` int NOT NULL
 );
 
 ALTER TABLE `Students` ADD FOREIGN KEY (`House`) REFERENCES `Houses` (`Id`);

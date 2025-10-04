@@ -8,8 +8,12 @@ from core.utils import clear_screen
 clear_screen()
 print("LOGIN")
 print("----------------------------------------------------------------")
-username = input("Username: ")
-password = input("Password: ")
+try:
+    username = input("username: ")
+    password = input("password: ")
+except Exception:
+    print("An error occured!")
+    sys.exit(0)
 
 user = validate_user(username, password)
 if user == -1:
