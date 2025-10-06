@@ -4,6 +4,8 @@ import mysql.connector
 from mysql.connector import errorcode
 from prettytable import TableStyle, from_db_cursor
 
+from core.exceptions import InputLengthExceeded, InvalidInputLength
+
 
 def clear_screen():
     """
@@ -31,9 +33,10 @@ def print_queryset(cur):
     print(table)
 
 
-def int_input(message, rng=None):
+def int_input(message=None, rng=None):
     try:
-        print(message)
+        if not None:
+            print(message)
         ch = int(input(">>> "))
 
         if not rng:
@@ -55,27 +58,30 @@ def char_input(message, length=-1, max_length=-1):
     except Exception:
         print("Please enter a valid string!")
         return -1
+
     if length > 0:
         if len(text) == length:
             return text
         else:
             print(f"Please enter a string of length {length} characters!")
-            return -1
+            raise InvalidInputLength
+
     elif max_length > 0:
         if len(text) <= max_length:
             return text
         else:
             print(f"Please enter a string of maximum length of {length} characters!")
-            return -1
+            raise InputLengthExceeded
 
 
 def input_from_choice(choices):
     i = 1
     for choice in choices:
         print(f"{i}. {choice}")
-    ch = int_input(">>> ", (1, len(choices)))
+        i += 1
+    ch = int_input(rng=(1, len(choices)))
 
-    return choices[ch]
+    return choices[ch - 1]
 
 
 def connect_to_database():

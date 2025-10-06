@@ -2,12 +2,17 @@ from prettytable import PrettyTable, TableStyle
 
 from core.utils import *
 from user_interface import *
+from core.exceptions import InputLengthExceeded, InvalidInputLength
 
 
 def add_student(cnx):
-    stud_id = char_input("Enter student id >>> ", length=7)
-    adm_no = char_input("Enter admission no. >>> ", length=12)
-    name = char_input("Enter student name >>> ", max_length=50)
+    try:
+        stud_id = char_input("Enter student id (length=7) >>> ", length=7)
+        adm_no = char_input("Enter admission no. (length=12) >>> ", length=12)
+        name = char_input("Enter student name (max_length=50) >>> ", max_length=50)
+    except Exception:
+        return
+
     house = input_from_choice(["Arun", "Bhaskar", "Ravi", "Martand"])
     points = 0
 
@@ -15,6 +20,7 @@ def add_student(cnx):
     cur.execute(
         f"INSERT INTO Students VALUES('{stud_id}', '{adm_no}', '{name}', '{house}', {points})"
     )
+    cnx.commit()
 
     print("Record added!")
 
