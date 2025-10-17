@@ -1,5 +1,7 @@
 CREATE DATABASE HousePointsManagementSystem;
 
+USE HousePointsManagementSystem;
+
 CREATE TABLE `Users` (
   `Id` int PRIMARY KEY,
   `Username` char(15) NOT NULL,
