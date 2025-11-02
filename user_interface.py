@@ -1,7 +1,5 @@
 """
-Provides a command-line interface for viewing database records related to house points, student points, and event details.
-
-This module connects to the database and offers a menu-driven way for users to query and display information from the Houses, Students, Events, and Participations tables.
+Provides a command-line interface for viewing database records for user related tasks such as viewing house points, student points, and event details etc.
 """
 
 from core.utils import *

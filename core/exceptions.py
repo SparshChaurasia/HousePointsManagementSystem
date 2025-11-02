@@ -9,7 +9,7 @@ class InvalidInputLength(Exception):
     """
 
     def __init__(self):
-        super().__init__("Please enter date in the valid format!")
+        super().__init__("Input does not meet the required length!")
 
 
 class InputLengthExceeded(Exception):
@@ -18,7 +18,7 @@ class InputLengthExceeded(Exception):
     """
 
     def __init__(self):
-        super().__init__("Please enter date in the valid format!")
+        super().__init__("Input exceeds the maximum allowed length!")
 
 
 class InvalidDateFormat(Exception):

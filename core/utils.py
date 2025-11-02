@@ -1,7 +1,5 @@
 """
-Utility module containing helper functions for common tasks like console management, user input handling, database connectivity, and data display.
-
-This module simplifies terminal interaction, robust input validation, and standard database operations across the application.
+Utility module for console management, user input handling, database connectivity, and data display.
 """
 
 import os
@@ -9,15 +7,16 @@ import os
 import mysql.connector
 from mysql.connector import errorcode
 from prettytable import TableStyle, from_db_cursor
+from dotenv import load_dotenv
 
 from core.exceptions import *
 
+# Load environment variables from .env file
+load_dotenv()
+
 
 def clear_screen():
-    """
-    Clears the terminal screen using OS-specific commands.
-    """
-
+    """Clears the terminal screen using OS-specific commands."""
     # For Windows
     if os.name == "nt":
         os.system("cls")
@@ -28,39 +27,38 @@ def clear_screen():
 
 def print_queryset(cur):
     """
-    Prints the results of a database query using a formatted table.
-
+    Prints database query results in a formatted table.
+    
     Args:
-        cur: The database cursor object containing the query results.
+        cur: Database cursor containing query results.
     """
-
     table = from_db_cursor(cur)
-    table.align = "l"
-    table.set_style(TableStyle.SINGLE_BORDER)
-    print(table)
+    if table is not None:
+        table.align = "l"
+        table.set_style(TableStyle.SINGLE_BORDER)
+        print(table)
 
 
 def int_input(message=None, rng=None):
     """
-    Prompts the user for integer input and validates it against the given range (optional).
-
+    Gets integer input from user with optional range validation.
+    
     Args:
-        message (str, optional): The prompt message to display to the user.
-        rng (tuple[int, int], optional): A tuple (min, max) defining the acceptable range (inclusive).
-
+        message (str, optional): Prompt message to display.
+        rng (tuple[int, int], optional): Acceptable range (min, max).
+        
     Returns:
-        int: The validated integer input, or -1 if the input is invalid or falls outside the specified range.
+        int: Validated input or -1 if invalid.
     """
-
     try:
-        if not None:
+        if message is not None:
             print(message)
         ch = int(input(">>> "))
 
-        if not rng:
+        if rng is None:
             return ch
 
-        if ch >= rng[0] and ch <= rng[1]:
+        if rng[0] <= ch <= rng[1]:
             return ch
         else:
             print("Please enter a valid choice / number")
@@ -72,21 +70,20 @@ def int_input(message=None, rng=None):
 
 def char_input(message, length=-1, max_length=-1):
     """
-    Prompts the user for string input and validates its length.
-
+    Gets string input from user with length validation.
+    
     Args:
-        message (str): The prompt message to display to the user.
-        length (int, optional): The exact required length of the string. Defaults to -1 (no exact length check).
-        max_length (int, optional): The maximum allowed length of the string. Defaults to -1 (no max length check).
-
+        message (str): Prompt message to display.
+        length (int, optional): Exact required length. Defaults to -1.
+        max_length (int, optional): Maximum allowed length. Defaults to -1.
+        
     Returns:
-        str: The validated string input.
-
+        str: Validated string input.
+        
     Raises:
-        InvalidInputLength: If an exact `length` is specified and not met.
-        InputLengthExceeded: If `max_length` is specified and exceeded.
+        InvalidInputLength: When exact length requirement not met.
+        InputLengthExceeded: When maximum length exceeded.
     """
-
     try:
         text = input(message)
     except Exception:
@@ -104,31 +101,28 @@ def char_input(message, length=-1, max_length=-1):
         if len(text) <= max_length:
             return text
         else:
-            print(
-                f"Please enter a string of maximum length of {max_length} characters!"
-            )
+            print(f"Please enter a string of maximum length of {max_length} characters!")
             raise InputLengthExceeded
 
 
 def date_input(message):
     """
-    Prompts the user for date input and validates it against the 'YYYY-MM-DD' format.
-
+    Gets date input from user in YYYY-MM-DD format.
+    
     Args:
-        message (str): The prompt message to display to the user.
-
+        message (str): Prompt message to display.
+        
     Returns:
-        str: The validated date string in 'YYYY-MM-DD' format.
-
+        str: Validated date string in YYYY-MM-DD format.
+        
     Raises:
-        InvalidDateFormat: If the format is incorrect or any part (Y, M, D) is not a valid integer.
+        InvalidDateFormat: When format is incorrect.
     """
-
     text = input(message)
     lst = text.split("-")
 
     # Check if the format of the date is correct
-    if not (len(lst[0]) == 4 and len(lst[1]) == 2 and len(lst[2])) == 2:
+    if not (len(lst[0]) == 4 and len(lst[1]) == 2 and len(lst[2]) == 2):
         raise InvalidDateFormat
 
     try:
@@ -144,19 +138,18 @@ def date_input(message):
 
 def input_from_choice(message, choices):
     """
-    Displays a numbered list of choices to the user and returns the selected item.
-
+    Displays choices and returns user selection.
+    
     Args:
-        message (str): The prompt message to display before the list of choices.
-        choices (list[str]): A list of strings representing the available options.
-
+        message (str): Prompt message to display.
+        choices (list[str]): Available options.
+        
     Returns:
-        str: The selected item from the `choices` list.
-
+        str: Selected item from choices.
+        
     Raises:
-        Exception: If the integer input is invalid (returns -1 from int_input).
+        Exception: When input is invalid.
     """
-
     print(message)
     i = 1
     for choice in choices:
@@ -172,18 +165,15 @@ def input_from_choice(message, choices):
 
 def connect_to_database():
     """
-    Establishes and returns a connection object to the MySQL database.
-
-    Connection details (user, password, host, database) are hardcoded.
-
+    Establishes connection to MySQL database using credentials from .env file.
+    
     Returns:
-        mysql.connector.MySQLConnection or None: The database connection object if successful, or None if a connection error occurs.
+        mysql.connector.MySQLConnection or None: Database connection object.
     """
-
     try:
         cnx = mysql.connector.connect(
-            user="root",
-            password="tiger",
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", "tiger"),
             host="127.0.0.1",
             database="HousePointsManagementSystem",
         )
@@ -200,18 +190,14 @@ def connect_to_database():
 
 def create_database_cursor(cnx):
     """
-    Creates and returns a database cursor object from an active connection.
-
+    Creates database cursor from connection.
+    
     Args:
-        cnx (mysql.connector.MySQLConnection): The active database connection object.
-
+        cnx (mysql.connector.MySQLConnection): Active database connection.
+        
     Returns:
-        mysql.connector.cursor.MySQLCursor: The database cursor object.
-
-    Raises:
-        mysql.connector.Error: If an error occurs while creating the cursor.
+        mysql.connector.cursor.MySQLCursor: Database cursor object.
     """
-
     try:
         cur = cnx.cursor()
 
