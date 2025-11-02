@@ -18,7 +18,6 @@ def validate_user(username, password):
     Returns:
         tuple[str, str] or int: A tuple containing (username, role) upon successful validation, otherwise returns -1 to indicate failure.
     """
-
     cnx = connect_to_database()
     cur = create_database_cursor(cnx)
     cur.execute("SELECT * FROM Users;")

@@ -8,7 +8,6 @@ import sys
 
 import admin_interface
 import user_interface
-from core.exceptions import InvalidUserCredentials
 from core.login import validate_user
 from core.utils import clear_screen
 
@@ -34,7 +33,7 @@ def main():
 
     try:
         user = validate_user(username, password)
-    except InvalidUserCredentials as e:
+    except Exception as e:
         print(e)
         sys.exit(0)
 

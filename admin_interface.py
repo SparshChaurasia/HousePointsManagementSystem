@@ -1,3 +1,10 @@
+"""
+Administrative interface for the House Points Management System.
+
+Provides functionality for managing students, events, and participations.
+Includes features for adding records and generating activity reports.
+"""
+
 from prettytable import PrettyTable, TableStyle
 
 from core.utils import *
@@ -360,10 +367,8 @@ def main():
             print(e)
             continue
 
-
         if ch == 0:
             break
-
         elif ch == 1:
             table = PrettyTable()
             table.add_rows(
@@ -379,36 +384,25 @@ def main():
             table.align = "l"
             table.set_style(TableStyle.SINGLE_BORDER)
             print(table.get_string(header=False))
-
         elif ch == 2:
             view_house_points(cnx)
-
         elif ch == 3:
             view_student_points(cnx)
-
         elif ch == 4:
             view_events(cnx)
-
         elif ch == 5:
             view_event_participants(cnx)
-
         elif ch == 6:
             add_student(cnx)
-
         elif ch == 7:
             add_event(cnx)
-
         elif ch == 8:
             add_event_participants(cnx)
-
         elif ch == 9:
             add_event_results(cnx)
-
         elif ch == 10:
             activity_report(cnx)
-
         else:
             print("Something went wrong!")
 
-    if cnx is not None:
-        cnx.close()
+    cnx.close()

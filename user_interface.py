@@ -2,8 +2,9 @@
 Provides a command-line interface for viewing database records for user related tasks such as viewing house points, student points, and event details etc.
 """
 
-from core.utils import *
 from prettytable import PrettyTable, TableStyle
+
+from core.utils import *
 
 
 def view_house_points(cnx):
@@ -97,6 +98,7 @@ def view_event_participants(cnx):
     except Exception as e:
         print(e)
         return
+
 
 def main():
     """
