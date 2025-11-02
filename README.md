@@ -38,9 +38,13 @@ A comprehensive Python-based application for managing house points in educationa
      mysql -u root -p < schema/CreateDatabaseQuery.sql
      ```
 
-4. **Configure database access**:
-   - Update the database connection details in [core/utils.py](core/utils.py) if needed
-   - Default credentials: user="root", password="tiger"
+4. **Configure database access credentials**:
+   - Create a `.env` file in the project root directory
+   - Add your database credentials in the format:
+     ```
+     DB_USER=your_username
+     DB_PASSWORD=your_password
+     ```
 
 5. **Create initial user**:
    - Add a user to the Users table with appropriate role (Admin/User)
@@ -88,6 +92,7 @@ HousePointsManagementSystem/
 - **Libraries**: 
   - mysql-connector-python for database connectivity
   - prettytable for formatted console output
+  - python-dotenv for environment variable management
 
 ## Contributing
 
