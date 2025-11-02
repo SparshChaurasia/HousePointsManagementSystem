@@ -2,6 +2,22 @@
 Custom exception classes for specific application error scenarios.
 """
 
+class InvalidInputError(Exception):
+    """
+    Generic error raised when an input value is invalid.
+    """
+
+    def __init__(self):
+        super().__init__("Input is invalid!")
+
+
+class InputRangeError(Exception):
+    """
+    Raised when an input value is out of the expected range.
+    """
+
+    def __init__(self):
+        super().__init__("Input is out of the expected range!")
 
 class InvalidInputLength(Exception):
     """
@@ -34,6 +50,24 @@ class InvalidUserCredentials(Exception):
     """
     Raised when user credentials are invalid.
     """
-    
+
     def __init__(self):
         super().__init__("Invalid user credentials!")
+
+
+class DatabaseConnectionError(Exception):
+    """
+    Raised when there is an error connecting to the database.
+    """
+
+    def __init__(self):
+        super().__init__("Error connecting to the database!")
+
+
+class CursorError(Exception):
+    """
+    Raised when there is an error with creating database cursor.
+    """
+
+    def __init__(self):
+        super().__init__("Error creating database cursor!")

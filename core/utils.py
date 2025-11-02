@@ -48,12 +48,17 @@ def int_input(message=None, rng=None):
         rng (tuple[int, int], optional): Acceptable range (min, max).
         
     Returns:
-        int: Validated input or -1 if invalid.
+        int: Validated integer input.
+        
+    Raises:
+        InvalidInputError: When input is not a valid integer.
+        InputRangeError: When input is outside the specified range.
     """
     try:
         if message is not None:
-            print(message)
-        ch = int(input(">>> "))
+            ch = int(input(message))
+        else:
+            ch = int(input(">>> "))
 
         if rng is None:
             return ch
@@ -61,21 +66,19 @@ def int_input(message=None, rng=None):
         if rng[0] <= ch <= rng[1]:
             return ch
         else:
-            print("Please enter a valid choice / number")
-            return -1
-    except:
-        print("Please enter a valid choice / number")
-        return -1
+            raise InputRangeError()
+    except ValueError:
+        raise InvalidInputError()
 
 
-def char_input(message, length=-1, max_length=-1):
+def char_input(message, length=None, max_length=None):
     """
     Gets string input from user with length validation.
     
     Args:
         message (str): Prompt message to display.
-        length (int, optional): Exact required length. Defaults to -1.
-        max_length (int, optional): Maximum allowed length. Defaults to -1.
+        length (int, optional): Exact required length. Defaults to None.
+        max_length (int, optional): Maximum allowed length. Defaults to None.
         
     Returns:
         str: Validated string input.
@@ -83,26 +86,28 @@ def char_input(message, length=-1, max_length=-1):
     Raises:
         InvalidInputLength: When exact length requirement not met.
         InputLengthExceeded: When maximum length exceeded.
+        InvalidInputError: When input cannot be processed or user interrupts input.
     """
     try:
         text = input(message)
+    except KeyboardInterrupt:
+        raise InvalidInputError()
     except Exception:
-        print("Please enter a valid string!")
-        return -1
+        raise InvalidInputError()
 
-    if length > 0:
+    if length is not None:
         if len(text) == length:
             return text
         else:
-            print(f"Please enter a string of length {length} characters!")
-            raise InvalidInputLength
+            raise InvalidInputLength()
 
-    elif max_length > 0:
+    elif max_length is not None:
         if len(text) <= max_length:
             return text
         else:
-            print(f"Please enter a string of maximum length of {max_length} characters!")
-            raise InputLengthExceeded
+            raise InputLengthExceeded()
+    
+    return text
 
 
 def date_input(message):
@@ -116,14 +121,14 @@ def date_input(message):
         str: Validated date string in YYYY-MM-DD format.
         
     Raises:
-        InvalidDateFormat: When format is incorrect.
+        InvalidDateFormat: When format is incorrect or values are not valid numbers.
     """
     text = input(message)
     lst = text.split("-")
 
     # Check if the format of the date is correct
     if not (len(lst[0]) == 4 and len(lst[1]) == 2 and len(lst[2]) == 2):
-        raise InvalidDateFormat
+        raise InvalidDateFormat()
 
     try:
         # Check if the date, month and year part is number
@@ -131,7 +136,7 @@ def date_input(message):
         m = int(lst[1])
         d = int(lst[2])
     except Exception:
-        raise InvalidDateFormat
+        raise InvalidDateFormat()
 
     return text
 
@@ -148,17 +153,17 @@ def input_from_choice(message, choices):
         str: Selected item from choices.
         
     Raises:
-        Exception: When input is invalid.
+        InvalidInputError: When input is not a valid integer or out of range.
     """
     print(message)
     i = 1
     for choice in choices:
         print(f"{i}. {choice}")
         i += 1
-    ch = int_input(rng=(1, len(choices)))
-
-    if ch == -1:
-        raise Exception
+    try:
+        ch = int_input(rng=(1, len(choices)))
+    except Exception:
+        raise InvalidInputError()
 
     return choices[ch - 1]
 
@@ -168,7 +173,10 @@ def connect_to_database():
     Establishes connection to MySQL database using credentials from .env file.
     
     Returns:
-        mysql.connector.MySQLConnection or None: Database connection object.
+        mysql.connector.MySQLConnection: Database connection object.
+        
+    Raises:
+        DatabaseConnectionError: When database connection fails.
     """
     try:
         cnx = mysql.connector.connect(
@@ -180,12 +188,7 @@ def connect_to_database():
 
         return cnx
     except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Incorrect user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
+        raise DatabaseConnectionError()
 
 
 def create_database_cursor(cnx):
@@ -197,11 +200,13 @@ def create_database_cursor(cnx):
         
     Returns:
         mysql.connector.cursor.MySQLCursor: Database cursor object.
+        
+    Raises:
+        CursorError: When cursor creation fails.
     """
     try:
         cur = cnx.cursor()
 
         return cur
     except mysql.connector.Error as err:
-        print("Error in creating cursor")
-        print(err)
+        raise CursorError()
