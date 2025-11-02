@@ -1,8 +1,7 @@
 """
 Administrative interface for the House Points Management System.
 
-Provides functionality for managing students, events, and participations.
-Includes features for adding records and generating activity reports.
+Provides functionality for managing students, events, and participations, adding records and generating activity reports.
 """
 
 from prettytable import PrettyTable, TableStyle
