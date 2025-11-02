@@ -2,6 +2,8 @@
 Module for handling user authentication and login logic.
 """
 
+from core.exceptions import InvalidUserCredentials
+
 from .utils import connect_to_database, create_database_cursor
 
 
@@ -24,4 +26,5 @@ def validate_user(username, password):
     for row in cur:
         if row[1] == username and row[2] == password:
             return (username, row[3])
-    return -1
+
+    raise InvalidUserCredentials()

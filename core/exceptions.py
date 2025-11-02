@@ -28,3 +28,12 @@ class InvalidDateFormat(Exception):
 
     def __init__(self):
         super().__init__("Please enter date in the valid format!")
+
+
+class InvalidUserCredentials(Exception):
+    """
+    Raised when user credentials are invalid.
+    """
+    
+    def __init__(self):
+        super().__init__("Invalid user credentials!")

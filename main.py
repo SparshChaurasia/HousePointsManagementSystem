@@ -8,6 +8,7 @@ import sys
 
 import admin_interface
 import user_interface
+from core.exceptions import InvalidUserCredentials
 from core.login import validate_user
 from core.utils import clear_screen
 
@@ -24,14 +25,19 @@ def main():
     try:
         username = input("username: ")
         password = input("password: ")
+    except KeyboardInterrupt:
+        print("\nProgram Exit!")
+        sys.exit(0)
     except Exception:
-        print("An error occured!")
+        print("\nAn error occured!")
         sys.exit(0)
 
-    user = validate_user(username, password)
-    if user == -1:
-        print("Invalid user credentials!")
+    try:
+        user = validate_user(username, password)
+    except InvalidUserCredentials as e:
+        print(e)
         sys.exit(0)
+
     clear_screen()
 
     print("---------------- HOUSE POINTS MANAGEMENT SYSTEM ----------------")
