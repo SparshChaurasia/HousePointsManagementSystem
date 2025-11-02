@@ -19,8 +19,7 @@ def add_student(cnx):
         None
     """
     try:
-        stud_id = char_input("Enter student id (length=7) >>> ", length=7)
-        stud_id = stud_id.upper()
+        stud_id = char_input("Enter student id (length=7) >>> ", length=7).upper()
         adm_no = char_input("Enter admission no. (length=12) >>> ", length=12)
         name = char_input("Enter student name (max_length=50) >>> ", max_length=50)
         house = input_from_choice(
@@ -108,23 +107,23 @@ def add_event_participants(cnx):
         None
     """
     try:
+        is_interhouse = False
+        points = 0
+
         # Get event ID
         event_id = int_input("Enter event ID >>> ")
-
-        
         # Check if event exists
         cur = create_database_cursor(cnx)
-
-        cur.execute(f"SELECT Id FROM Events WHERE Id = {event_id}")
+        cur.execute(f"SELECT * FROM Events WHERE Id = {event_id}")
         result = cur.fetchone()
         if not result:
             print("Event not found!")
             return
+        if result[4] == "Interhouse":
+            is_interhouse = True
 
         stud_id = char_input("Enter student ID (length=7) >>> ", length=7)
         stud_id = stud_id.upper()
-
-        
         # Check if student exists
         cur = create_database_cursor(cnx)
         cur.execute(f"SELECT Id FROM Students WHERE Id = '{stud_id}'")
@@ -134,7 +133,8 @@ def add_event_participants(cnx):
             return
             
         # Get points awarded
-        points = int_input("Enter points awarded >>> ")
+        if is_interhouse != True:
+            points = int_input("Enter points awarded >>> ")
             
         # Check if participation already exists
         cur = create_database_cursor(cnx)
@@ -152,7 +152,6 @@ def add_event_participants(cnx):
         cur.execute(
             f"INSERT INTO Participations(Id, EventId, StudentId, PointsAwarded) VALUES({total_records + 1}, {event_id}, '{stud_id}', {points})"
         )
-        cnx.commit()
         
         print("Participant added successfully!")
         
@@ -175,12 +174,19 @@ def add_event_results(cnx):
         # Get event ID
         event_id = int_input("Enter event ID >>> ")
             
-        # Check if event exists
+        # Check if event exists and get event details
         cur = create_database_cursor(cnx)
-        cur.execute(f"SELECT Id FROM Events WHERE Id = {event_id}")
+        cur.execute(f"SELECT * FROM Events WHERE Id = {event_id}")
         result = cur.fetchone()
         if not result:
             print("Event not found!")
+            return
+            
+        # Check if event is interhouse
+        is_interhouse = result[4] == "Interhouse"
+        
+        if not is_interhouse:
+            print("Event results can only be added for Interhouse events!")
             return
             
         # Get position results
@@ -255,6 +261,14 @@ def add_event_results(cnx):
                 f"WHERE s.House = '{house}' AND p.EventId = {event_id}"
             )
             
+            # Update points awarded in the participations table for students of this house
+            cur = create_database_cursor(cnx)
+            cur.execute(
+                f"UPDATE Participations p JOIN Students s ON p.StudentId = s.Id "
+                f"SET p.PointsAwarded = {points} "
+                f"WHERE s.House = '{house}' AND p.EventId = {event_id}"
+            )
+            
         cnx.commit()
         print("Event results added successfully!")
         
@@ -304,6 +318,7 @@ def activity_report(cnx):
         print(f"Total Points Distributed: {total_points}")
         
         # House-wise points
+        print("\nHouse-wise Points:")
         view_house_points(cnx)
         
         # Top 5 participants by points

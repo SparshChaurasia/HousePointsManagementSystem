@@ -43,13 +43,13 @@ def view_student_points(cnx):
         if ch == 0:
             return
         elif ch == 1:
-            stud_id = int_input("Enter Student ID >>> ")
+            stud_id = char_input("Enter Student ID >>> ").upper()
             cur = create_database_cursor(cnx)
-            cur.execute(f"SELECT Id, Name, House, Points FROM Students WHERE Id={stud_id};")
+            cur.execute(f"SELECT Id, Name, House, Points FROM Students WHERE Id='{stud_id}'")
             print_queryset(cur)
         elif ch == 2:
             cur = create_database_cursor(cnx)
-            cur.execute(f"SELECT Id, Name, House, Points FROM Students;")
+            cur.execute(f"SELECT Id, Name, House, Points FROM Students")
             print_queryset(cur)
 
     except Exception as e:
@@ -69,7 +69,7 @@ def view_events(cnx):
     """
     try:
         cur = create_database_cursor(cnx)
-        cur.execute("SELECT * FROM Events;")
+        cur.execute("SELECT * FROM Events")
         print_queryset(cur)
 
     except Exception as e:
@@ -97,13 +97,13 @@ def view_event_participants(cnx):
             event_id = int_input("Enter Event ID >>> ")
             cur = create_database_cursor(cnx)
             cur.execute(
-                f"SELECT (SELECT Name FROM Events WHERE Id=Participations.EventId) AS EventName, (SELECT Name FROM Students WHERE Id=Participations.StudentId) AS StudentName, PointsAwarded FROM Participations WHERE Participations.EventId={event_id};"
+                f"SELECT (SELECT Name FROM Events WHERE Id=Participations.EventId) AS EventName, (SELECT Name FROM Students WHERE Id=Participations.StudentId) AS StudentName, PointsAwarded FROM Participations WHERE Participations.EventId={event_id}"
             )
             print_queryset(cur)
         elif ch == 2:
             cur = create_database_cursor(cnx)
             cur.execute(
-                f"SELECT (SELECT Name FROM Events WHERE Id=Participations.EventId) AS EventName, (SELECT Name FROM Students WHERE Id=Participations.StudentId) AS StudentName, PointsAwarded FROM Participations;"
+                f"SELECT (SELECT Name FROM Events WHERE Id=Participations.EventId) AS EventName, (SELECT Name FROM Students WHERE Id=Participations.StudentId) AS StudentName, PointsAwarded FROM Participations"
             )
             print_queryset(cur)
 
