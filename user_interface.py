@@ -13,6 +13,9 @@ def view_house_points(cnx):
 
     Args:
         cnx: The active database connection object.
+                
+    Returns:
+        None
     """
     try:
         cur = create_database_cursor(cnx)
@@ -29,6 +32,9 @@ def view_student_points(cnx):
 
     Args:
         cnx: The active database connection object.
+            
+    Returns:
+        None
     """
 
     try:
@@ -57,6 +63,9 @@ def view_events(cnx):
 
     Args:
         cnx: The active database connection object.
+            
+    Returns:
+        None
     """
     try:
         cur = create_database_cursor(cnx)
@@ -74,6 +83,9 @@ def view_event_participants(cnx):
 
     Args:
         cnx: The active database connection object.
+            
+    Returns:
+        None
     """
 
     try:

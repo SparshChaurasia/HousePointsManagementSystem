@@ -1,7 +1,5 @@
 """
-Administrative interface for the House Points Management System.
-
-Provides functionality for managing students, events, and participations, adding records and generating activity reports.
+Provides command line interface for managing students, events, and participations, adding records and generating activity reports.
 """
 
 from prettytable import PrettyTable, TableStyle
@@ -334,6 +332,10 @@ def activity_report(cnx):
 
 
 def main():
+    """
+    The main execution function for the user interface.
+    """
+
     table = PrettyTable()
     table.add_rows(
         [

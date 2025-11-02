@@ -31,6 +31,9 @@ def print_queryset(cur):
     
     Args:
         cur: Database cursor containing query results.
+                
+    Returns:
+        None
     """
     table = from_db_cursor(cur)
     if table is not None:
