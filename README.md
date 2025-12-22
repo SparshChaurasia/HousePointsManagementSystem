@@ -72,20 +72,20 @@ python main.py
 
 ```
 HousePointsManagementSystem/
-├── core/                 # Core functionality modules
-│   ├── exceptions.py     # Custom exception classes
-│   ├── login.py          # Authentication system
-│   └── utils.py          # Utility functions
-├── schema/               # Database schema files
+├── core/
+│   ├── exceptions.py
+│   ├── login.py
+│   └── utils.py
+├── schema/
 │   └── CreateDatabaseQuery.sql
-├── admin_interface.py    # Admin-specific interface
-├── user_interface.py     # User-specific interface
-├── main.py               # Main application entry point
-├── requirements.txt      # Python dependencies
-└── README.md             # This file
+├── admin_interface.py
+├── user_interface.py
+├── main.py
+├── requirements.txt
+└── README.md
 ```
 
-## Technology Stack
+## Tech Stack
 
 - **Language**: Python 3
 - **Database**: MySQL

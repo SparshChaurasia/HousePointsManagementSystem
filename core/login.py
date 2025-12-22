@@ -16,7 +16,10 @@ def validate_user(username, password):
         password (str): The password string provided by the user.
 
     Returns:
-        tuple[str, str] or int: A tuple containing (username, role) upon successful validation, otherwise returns -1 to indicate failure.
+        tuple[str, str]: A tuple containing (username, role) upon successful validation.
+
+    Raises:
+        InvalidUserCredentials: If the username and password do not match any record in the database.
     """
     cnx = connect_to_database()
     cur = create_database_cursor(cnx)

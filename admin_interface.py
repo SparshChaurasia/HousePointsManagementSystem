@@ -288,7 +288,7 @@ def activity_report(cnx):
         None
     """
     try:
-        print("\n---------------- ACTIVITY REPORT ----------------\n")
+        print("\n" + "-" * 16 + "ACTIVITY REPORT" + "-" * 16 + "\n")
         
         # Total events
         cur = create_database_cursor(cnx)
@@ -373,7 +373,7 @@ def main():
         return
 
     while True:
-        print("----------------------------------------------------------------")
+        print("-" * 64)
         try:
             ch = int_input(
                 message="Enter 1 to show menu\n>>> ",

@@ -135,7 +135,7 @@ def main():
     cnx = connect_to_database()
 
     while True:
-        print("----------------------------------------------------------------")
+        print("-" * 64)
         try:
             ch = int_input(
                 message="Enter 1 to show menu\n>>> ",

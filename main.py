@@ -19,7 +19,7 @@ def main():
 
     clear_screen()
     print("LOGIN")
-    print("----------------------------------------------------------------")
+    print("-" * 64)
 
     try:
         username = input("username: ")
@@ -39,7 +39,7 @@ def main():
 
     clear_screen()
 
-    print("---------------- HOUSE POINTS MANAGEMENT SYSTEM ----------------")
+    print("-" * 16, "HOUSE POINTS MANAGEMENT SYSTEM", "-" * 16)
     print("USER: ", user[0])
     print("ROLE: ", user[1])
 
@@ -49,7 +49,7 @@ def main():
     elif user[1].lower() == "user":
         user_interface.main()
 
-    print("------------------------- PROGRAM EXIT -------------------------")
+    print("-" * 25, "PROGRAM EXIT", "-" * 25)
 
 
 if __name__ == "__main__":
