@@ -126,7 +126,7 @@ def add_event_participants(cnx):
         # Get points awarded
         if is_interhouse != True:
             points = int_input("Enter points awarded >>> ")
-            
+
         # Check if participation already exists
         cur = create_database_cursor(cnx)
         cur.execute(f"SELECT Id FROM Participations WHERE EventId = {event_id} AND StudentId = '{stud_id}'")
@@ -140,7 +140,13 @@ def add_event_participants(cnx):
         cur.execute(
             f"INSERT INTO Participations(EventId, StudentId, PointsAwarded) VALUES({event_id}, '{stud_id}', {points})"
         )
+
+        if points > 0:
+            cur.execute(
+                f"UPDATE Students SET Points = Points + {points} WHERE Id = '{stud_id}'"
+            )
         
+        cnx.commit()
         print("Participant added successfully!")
         
     except Exception as e:
