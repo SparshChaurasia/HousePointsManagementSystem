@@ -3,20 +3,20 @@ CREATE DATABASE HousePointsManagementSystem;
 USE HousePointsManagementSystem;
 
 CREATE TABLE `Users` (
-  `Id` int PRIMARY KEY,
+  `Id` int AUTO_INCREMENT PRIMARY KEY,
   `Username` char(15) NOT NULL,
   `Password` char(15) NOT NULL,
   `Role` varchar(10) DEFAULT "User"
 );
 
 CREATE TABLE `Houses` (
-  `Id` int PRIMARY KEY,
+  `Id` int AUTO_INCREMENT PRIMARY KEY,
   `Name` varchar(20) NOT NULL,
   `Points` int DEFAULT 0
 );
 
 CREATE TABLE `StudentGroup` (
-  `Id` int PRIMARY KEY,
+  `Id` int AUTO_INCREMENT PRIMARY KEY,
   `Name` varchar(20) NOT NULL
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE `Students` (
 );
 
 CREATE TABLE `Events` (
-  `Id` int PRIMARY KEY,
+  `Id` int AUTO_INCREMENT PRIMARY KEY,
   `Name` varchar(50) NOT NULL,
   `HeldOn` date NOT NULL,
   `StudentGroup` varchar(20) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `Events` (
 );
 
 CREATE TABLE `Participations` (
-  `Id` int PRIMARY KEY,
+  `Id` int AUTO_INCREMENT PRIMARY KEY,
   `EventId` int NOT NULL,
   `StudentId` CHAR(7) NOT NULL,
   `PointsAwarded` int NOT NULL

@@ -50,15 +50,6 @@ def add_event(cnx):
     """
     try:
         cur = create_database_cursor(cnx)
-        cur.execute("SELECT * FROM Events ORDER BY Id DESC LIMIT 1;")
-        result = cur.fetchone()
-        if result:
-            prev_id = result[0]
-            event_id = prev_id + 1
-        else:
-            event_id = 1
-
-        cur = create_database_cursor(cnx)
         cur.execute("SELECT Name FROM StudentGroup;")
         options_result = cur.fetchall()
         if options_result is None:
@@ -86,7 +77,7 @@ def add_event(cnx):
 
         cur = create_database_cursor(cnx)
         cur.execute(
-            f"INSERT INTO Events(Id, Name, HeldOn, StudentGroup, Type, Organiser) VALUES({event_id}, '{name}', '{held_on}', '{student_group}', '{event_type}', '{organiser}');"
+            f"INSERT INTO Events(Name, HeldOn, StudentGroup, Type, Organiser) VALUES('{name}', '{held_on}', '{student_group}', '{event_type}', '{organiser}');"
         )
         cnx.commit()
         print("Event added successfully!")
@@ -143,14 +134,11 @@ def add_event_participants(cnx):
             print("Participation record already exists!")
             return
         
-        cur = create_database_cursor(cnx)
-        cur.execute("SELECT Id FROM Participations")
-        total_records = len(cur.fetchall())
 
         # Insert participation record
         cur = create_database_cursor(cnx)
         cur.execute(
-            f"INSERT INTO Participations(Id, EventId, StudentId, PointsAwarded) VALUES({total_records + 1}, {event_id}, '{stud_id}', {points})"
+            f"INSERT INTO Participations(EventId, StudentId, PointsAwarded) VALUES({event_id}, '{stud_id}', {points})"
         )
         
         print("Participant added successfully!")
